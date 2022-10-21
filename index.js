@@ -19,7 +19,7 @@ const dbConfig =require('./db/config')
 const SQLCient = require('./db/Products/sql.products');
 const SQLCientChat = require('./db/Products/sql.messages');
 const sqlClientProducts = new SQLCient(dbConfig.mariaDB, "products")
-const sqlClientMessages = new SQLCientChat(dbConfig.sqlite, "chat")
+const sqlClientMessages = new SQLCientChat(dbConfig.sqlite, "messages")
 
 
 // Middlewares
@@ -37,7 +37,7 @@ connectedServer.on('error', (error) => {
   console.error('Error: ', error);
 })
 
-/* 
+
 // Socket Events
 //Products
 io.on('connection', async (socket)=>{
@@ -51,16 +51,16 @@ io.on('connection', async (socket)=>{
   })
 
  
-}) */
+})
 
 //Chat
 io.on("connection",async (socket) => {
     console.log("There is a new client in the chat");
     
-    socket.emit("messages", await sqlClientMessages.traer());
+    socket.emit("messages", await sqlClientMessages.getAllDBM());
   
     socket.on("new-message", async (data) => {
-       await sqlClientMessages.guardar(data)
-      io.sockets.emit("messages", await sqlClientMessages.traer()); 
+       await sqlClientMessages.saveDBM(data)
+      io.sockets.emit("messages", await sqlClientMessages.getAllDBM()); 
     });
   });

@@ -3,7 +3,7 @@ module.exports = class SQLCientChat{
         this.knex= require('knex')(config)
         this.table= tableName
     }
-    async getByIdDB(id){
+    async getByIdDBM(id){
         try{
             const message = await this.knex
                 .from(this.table)
@@ -14,7 +14,7 @@ module.exports = class SQLCientChat{
             console.log(error.message);
         }
     }
-    async traer(){
+    async getAllDBM(){
         try{
             const messages= await this.knex.from(this.table).select("date", "author", "text")
             console.table(messages)
@@ -24,30 +24,30 @@ module.exports = class SQLCientChat{
             console.log(error.message);
     }
 }
-    async guardar(message){
+    async saveDBM(message){
         try{
-            await knex(this.table).insert(message)
+            await this.knex(this.table).insert(message)
             /* await this.knex(this.table).insert(message) */
 
         } catch (error){
             console.log(error.message);
         }
     }
-    async updateDB(message, id){
+    async updateDBM(message, id){
         try{
             await this.knex.from(this.table).where({id:id}).update({message})
         }catch(error){
             console.log(error.message);
         }
     }
-    async deleteByIdDB(id){
+    async deleteByIdDBM(id){
         try{
             await this.knex.from(this.table).where({id:id}).del(); 
         }catch(error){
             console.log(error.message);
         }
     }
-    async deleteAllDB(){
+    async deleteAllDBM(){
         try{
             await this.knex.from(this.table).del()
         }catch(error){

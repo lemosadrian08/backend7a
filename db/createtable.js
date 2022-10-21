@@ -3,9 +3,9 @@ const knex = require("knex")(dbconfig.sqlite);
 
 (async () => {
 	try {
-		const tableExist = await knex.schema.hasTable("chat");
+		const tableExist = await knex.schema.hasTable("mesagges");
 		if (!tableExist) {
-			await knex.schema.createTable("chat", (table) => {
+			await knex.schema.createTable("messages", (table) => {
 				table.increments("id"); // id => primary key
 				table.string("date");
 				table.string("author");
